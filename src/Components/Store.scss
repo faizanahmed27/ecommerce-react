@@ -1,0 +1,34 @@
+.store {
+  background-color: #27ead09d;
+  display: flex;
+}
+
+.storeContainer {
+  flex: 6;
+  margin-top: 10px;
+  display: flex;
+}
+
+/* Banner styling */
+.storeBanner {
+  background: #ffeb3b;
+  padding: 15px;
+  border-radius: 8px;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+/* Product area styling */
+.storeProducts {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 15px;
+}
+
+/* Cart summary styling */
+.storeCartSummary {
+  background: white;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
