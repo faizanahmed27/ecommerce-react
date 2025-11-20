@@ -11,6 +11,7 @@ import Dashboard from './Components/Dashboard'
 import PrivateRoute from './Components/PrivateRoute';
 import Store from './Components/Store'
 import AboutUs from './Components/AboutUs'
+import ProductList from './Components/ProductList'
 import { AuthProvider } from './Context/AuthContext';
 
 
@@ -31,6 +32,7 @@ function App() {
           <Route path='/store' element={<PrivateRoute><Store /></PrivateRoute>} />
           {/* <Route path='/store' element={<PrivateRoute><Store></Store><PrivateRoute/>}></Route>  */}
           <Route path='/aboutUs' element={<AboutUs></AboutUs>}></Route> 
+           <Route path='/products/:categoryId' element={<ProductList></ProductList>}></Route> 
           {/*
           <Route path='user' element={<PrivateRoute/>}>
           

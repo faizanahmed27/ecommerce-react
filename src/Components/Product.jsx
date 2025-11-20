@@ -2,7 +2,8 @@ import React, { useEffect } from "react";
 import { Row, Col, Card, CardBody, CardText, Container, Button } from "reactstrap";
 
 function Product({product}){
-    const originalPrice = product.productPrice;
+    
+     const originalPrice = product.productPrice;
      const discount = 0.10; // 5%
      const discountedPrice = (originalPrice - originalPrice * discount).toFixed(2);
       // If your image is coming as base64 string (product.productImage)

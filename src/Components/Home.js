@@ -10,7 +10,7 @@ import { useNavigate } from "react-router-dom";
 function Home() {
 
     const [category, setCategory] = useState([]);
-    const [products, setProducts] = useState([]);
+    const [products, setProducts] = useState(null);
     const navigate = useNavigate();
     useEffect(() => {
         loadCategory()
@@ -23,16 +23,26 @@ function Home() {
             });
     }, []);
 
-    const fetchProducts = async (categoryId) => {
-        try {
-            console.log("Response in Category: ", (await loadProductByCategory(categoryId)));
-            setProducts((await loadProductByCategory(categoryId)));
+    const handleCategoryClick = (categoryId)=>{
+        const requiredPath = `/products/${categoryId}`;
+        navigate(requiredPath);
+    }
+
+    // const fetchProducts = async (categoryId) => {
+    //     try {
+            
+    //         const data = await loadProductByCategory(categoryId);
+    //         console.log("Response in Category:", data);
+    //         const singleItem = data[0];
+            
+    //         setProducts(singleItem);
+    //       console.log("Single object:", singleItem);
+    //       navigate("/productsList", { state: singleItem });
            
-           
-        } catch (error) {
-            //console.error("Error loading products:", error);
-        }
-    };
+    //     } catch (error) {
+    //         //console.error("Error loading products:", error);
+    //     }
+    // };
 
     return (
         <Base>
@@ -67,7 +77,7 @@ function Home() {
                                 <div
                                     key={index}
                                     className="topic-card"
-                                    onClick={() => fetchProducts(cat.categoryId)}
+                                    onClick={() => handleCategoryClick(cat.categoryId)}
                                     style={{ cursor: "pointer" }}
                                 >
                                     {cat.categoryTitle && cat.categoryTitle.trim() !== ""
