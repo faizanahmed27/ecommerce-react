@@ -1,12 +1,16 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom"
 import { loadProductByCategory } from "./Service/ProductService";
-import Product from './Product'
+import ProductDisplay from './ProductDisplay'
+import Base from './Base';
+import { Row, Col } from "reactstrap";
 
 const ProductList = () => {
 
     const [products, setProducts] = useState([]);
     const {categoryId} = useParams(); // Fetch ID from URL
+    const [hoverStates, setHoverStates] = useState({});
+    const [isHovered, setIsHovered] = useState({});
 
     useEffect(() =>{
     fetchProducts(categoryId);
@@ -23,16 +27,30 @@ const ProductList = () => {
     }
 
     return (
+        <Base>
+       
         <div>
-            {products && products.length > 0 ? (
-                products.map((item) => (
-
-                    <Product key={item.productId} product={item} />
-                ))
-            ) : (
-                <p>No Products available for this category</p>
-            )}
+              <Row className="mt-3">
+      {products && products.length > 0 ? (
+        products.map((product) => {
+         // const [isHovered, setIsHovered] = useState(false);
+          return (
+            <Col key={product.productId} lg="2" md="6" sm="12" className="d-flex">
+              <ProductDisplay
+                product={product}
+                isHovered={isHovered}
+                setIsHovered={setIsHovered}
+              />
+            </Col>
+          );
+        })
+      ) : (
+        <p>No Products available for this category</p>
+      )}
+    </Row>
         </div>
+       
+        </Base>
     );
 };
 
