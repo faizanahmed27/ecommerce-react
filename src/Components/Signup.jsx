@@ -73,7 +73,7 @@ function SignUp() {
                             <h3 className="text-center">Signup Here!</h3>
                         </CardHeader>
                         <CardBody>
-                            {JSON.stringify(user)}
+                            {/* {JSON.stringify(user)} */}
                             <Form onSubmit={registerUser}>
                                 <div>
 

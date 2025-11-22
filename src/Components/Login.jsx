@@ -80,7 +80,7 @@ function Login() {
                 <Col md={{ size: 6, offset: 3 }}>
 
                     <Card color="light" className=" shadow-lg m-3">
-                        {JSON.stringify(loginDate)}
+                        {/* {JSON.stringify(loginDate)} */}
                         <CardBody>
                             <h3 className="text-center">Login Here</h3>
                             <Form onSubmit={loginFormSubmit}>
