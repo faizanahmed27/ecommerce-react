@@ -13,6 +13,7 @@ import Store from './Components/Store'
 import AboutUs from './Components/AboutUs'
 import ProductList from './Components/ProductList'
 import { AuthProvider } from './Context/AuthContext';
+import Reports from './Components/Reports';
 
 
 function App() {
@@ -33,6 +34,8 @@ function App() {
           {/* <Route path='/store' element={<PrivateRoute><Store></Store><PrivateRoute/>}></Route>  */}
           <Route path='/aboutUs' element={<AboutUs></AboutUs>}></Route> 
            <Route path='/products/:categoryId' element={<ProductList></ProductList>}></Route> 
+            <Route path="/reports" element={<PrivateRoute><Reports /></PrivateRoute>} />
+            
           {/*
           <Route path='user' element={<PrivateRoute/>}>
           
