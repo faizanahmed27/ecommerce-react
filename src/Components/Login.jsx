@@ -53,10 +53,17 @@ function Login() {
             if (response?.status !=='failed') {
                 // call storeLocalStorage method from index.js/Auth
                     login(response); // This should update auth context & localStorage
+                    if(response?.role == 'ADMIN'){
+
                     storeLocalStorage(response, () =>{
+                    navigate("/admin/dashboard");
+                });
+                 }else{
+                   storeLocalStorage(response, () =>{
                     navigate("/user/dashboard");
                 });
-                toast.success(`Login Successfully ${response.userName}`);  
+                 }
+                toast.success(`Login Successfully ${response.userName}`);
             }else{
                  toast.error(response.message);
             }

@@ -2,7 +2,7 @@ import logo from './logo.svg';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Home from './Components/Home';
-import { Route, Routes, BrowserRouter } from 'react-router-dom'
+import { Route, Routes, BrowserRouter, Router } from 'react-router-dom'
 import Login from './Components/Login'
 import SignUp from './Components/Signup';
 import 'react-toastify/dist/ReactToastify.css'
@@ -14,6 +14,7 @@ import AboutUs from './Components/AboutUs'
 import ProductList from './Components/ProductList'
 import { AuthProvider } from './Context/AuthContext';
 import Reports from './Components/Reports';
+import UserDashboard from './Components/UserDashboard';
 
 
 function App() {
@@ -23,19 +24,38 @@ function App() {
       <BrowserRouter>
       <ToastContainer position='top-center'></ToastContainer>
        
+        
+       
         <Routes>
            <Route path='/' element={<Home></Home>}></Route>
           <Route path='/login' element={<Login></Login>}></Route>
           <Route path='/signup' element={<SignUp></SignUp>}></Route>
           {/* <Route path='/user/dashboard' element={<Dashboard></Dashboard>}></Route>  */}
-          <Route path='/user/dashboard' element={<PrivateRoute><Dashboard /></PrivateRoute>} />
+          <Route
+  path="/admin/dashboard"
+  element={
+    <PrivateRoute allowed={["admin"]}>
+      <Dashboard />
+    </PrivateRoute>
+  }
+/>
+          <Route
+  path="/user/dashboard"
+  element={
+    <PrivateRoute allowed={["user"]}>
+      <UserDashboard />
+    </PrivateRoute>
+  }
+/>
 
           <Route path='/store' element={<PrivateRoute><Store /></PrivateRoute>} />
           {/* <Route path='/store' element={<PrivateRoute><Store></Store><PrivateRoute/>}></Route>  */}
           <Route path='/aboutUs' element={<AboutUs></AboutUs>}></Route> 
            <Route path='/products/:categoryId' element={<ProductList></ProductList>}></Route> 
-            <Route path="/reports" element={<PrivateRoute><Reports /></PrivateRoute>} />
-            
+           
+           <Route path='/reports' element={<Reports></Reports>}></Route> 
+
+           
           {/*
           <Route path='user' element={<PrivateRoute/>}>
           
@@ -44,6 +64,9 @@ function App() {
           </Route>
           */}
         </Routes>
+
+
+       
         
 
       </BrowserRouter>
