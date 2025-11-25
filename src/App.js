@@ -15,6 +15,7 @@ import ProductList from './Components/ProductList'
 import { AuthProvider } from './Context/AuthContext';
 import Reports from './Components/Reports';
 import UserDashboard from './Components/UserDashboard';
+import AdminLayout from './Components/AdminLayout';
 
 
 function App() {
@@ -31,14 +32,28 @@ function App() {
           <Route path='/login' element={<Login></Login>}></Route>
           <Route path='/signup' element={<SignUp></SignUp>}></Route>
           {/* <Route path='/user/dashboard' element={<Dashboard></Dashboard>}></Route>  */}
-          <Route
+          {/* <Route
   path="/admin/dashboard"
   element={
     <PrivateRoute allowed={["admin"]}>
       <Dashboard />
     </PrivateRoute>
   }
-/>
+/> */}
+
+ {/* ADMIN LAYOUT WITH COMMON SIDEBAR */}
+            <Route
+              path="/admin"
+              element={
+                <PrivateRoute allowed={['admin']}>
+                  <AdminLayout />
+                </PrivateRoute>
+              }
+            >
+              <Route path="dashboard" element={<Dashboard />} />
+              <Route path="reports" element={<Reports />} />
+            </Route>
+
           <Route
   path="/user/dashboard"
   element={
@@ -53,7 +68,7 @@ function App() {
           <Route path='/aboutUs' element={<AboutUs></AboutUs>}></Route> 
            <Route path='/products/:categoryId' element={<ProductList></ProductList>}></Route> 
            
-           <Route path='/reports' element={<Reports></Reports>}></Route> 
+           {/* <Route path='/reports' element={<Reports></Reports>}></Route>  */}
 
            
           {/*
