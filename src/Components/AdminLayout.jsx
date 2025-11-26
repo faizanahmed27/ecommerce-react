@@ -14,18 +14,28 @@ const AdminLayout = () => {
         navigate('/login');
     };
     return (
-        <Base>
-            <div className="d-flex">
-                {/* Left sidebar */}
-                <AdminSidebar />
-                <span className="navbar-brand mt-3">Welcome, {user?.userName} 👋</span>
-                {/* Right content (Dashboard / Reports etc.) */}
-                <div className="flex-grow-1 p-4">
-                    <Outlet />
+    <Base>
+        <div className="d-flex">
+            {/* Left sidebar */}
+            <AdminSidebar />
+
+            {/* Right section */}
+            <div className="flex-grow-1 p-3">
+
+                {/* Top header */}
+                <div className="d-flex justify-content-between align-items-center mb-4">
+                    <h4 className="navbar-brand mb-0">
+                        Welcome, {user?.userName} 👋
+                    </h4>
                 </div>
+
+                {/* Page content */}
+                <Outlet />
             </div>
-        </Base>
-    );
+        </div>
+    </Base>
+);
+
 };
 
 export default AdminLayout;

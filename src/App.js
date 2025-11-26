@@ -16,6 +16,7 @@ import { AuthProvider } from './Context/AuthContext';
 import Reports from './Components/Reports';
 import UserDashboard from './Components/UserDashboard';
 import AdminLayout from './Components/AdminLayout';
+import AdminProducts from './Components/AdminProducts';
 
 
 function App() {
@@ -52,6 +53,7 @@ function App() {
             >
               <Route path="dashboard" element={<Dashboard />} />
               <Route path="reports" element={<Reports />} />
+              <Route path="product" element={<AdminProducts />} />
             </Route>
 
           <Route
