@@ -1,7 +1,7 @@
 import { http } from "./axios-helper"
 
-export const loadProduct=()=>{
-    return http.get(`/ecommorce/api/v1/product/viewAll?pageNumber=0&pageSize=10`).then(resp => resp.data);
+export const loadProduct=(page, size)=>{
+    return http.get(`/ecommorce/api/v1/product/viewAll?pageNumber=${page}&pageSize=${size}`).then(resp => resp.data);
 }
 
 // Get products by category
