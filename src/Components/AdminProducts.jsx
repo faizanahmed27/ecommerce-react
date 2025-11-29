@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, Link } from "react-router-dom";
 import './AdminProducts.scss'
 import { loadProduct } from "./Service/ProductService";
 const AdminProducts = () => {
   const [products, setProductDetails] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
-  const pageSize = 5;
+  const pageSize = 10;
 
   useEffect(() => {
     loadProduct(currentPage, pageSize)
@@ -26,6 +26,7 @@ const AdminProducts = () => {
             <th style={styles.th}>Product Name</th>
             <th style={styles.th}>Category</th>
             <th style={styles.th}>Price</th>
+             <th style={styles.th}>Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -34,6 +35,17 @@ const AdminProducts = () => {
               <td style={styles.td}>{p.productName}</td>
               <td style={styles.td}>{p.category.categoryTitle}</td>
               <td style={styles.td}>{p.productPrice}</td>
+              <td style={styles.td}>
+                <Link 
+                 // to={`/admin/products/view/${p.productId}`} 
+                   to={`/admin/view-product/${p.productId}`}
+
+                  
+                 style={{ color: "blue", textDecoration: "underline" }}
+                >
+                  View
+                </Link>
+              </td>
             </tr>
           ))}
         </tbody>

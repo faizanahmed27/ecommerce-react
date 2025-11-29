@@ -17,6 +17,7 @@ import Reports from './Components/Reports';
 import UserDashboard from './Components/UserDashboard';
 import AdminLayout from './Components/AdminLayout';
 import AdminProducts from './Components/AdminProducts';
+import AdminViewProducts from './Components/AdminViewProducts';
 
 
 function App() {
@@ -54,6 +55,7 @@ function App() {
               <Route path="dashboard" element={<Dashboard />} />
               <Route path="reports" element={<Reports />} />
               <Route path="product" element={<AdminProducts />} />
+              <Route path="view-product/:productId" element={<AdminViewProducts></AdminViewProducts>}></Route> 
             </Route>
 
           <Route
@@ -80,6 +82,8 @@ function App() {
 
           </Route>
           */}
+
+          
         </Routes>
 
 
