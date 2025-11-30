@@ -1,7 +1,8 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { Card } from "reactstrap";
 import ImageUploadCard from "./ImageUploadCard";
 import './DemoProduct.scss';
+import { loadProductWitoutImage } from "./Service/ProductService";
 
 const initialProducts = [
   { id: 1, name: "Product A", image: null },
@@ -17,69 +18,63 @@ const initialProducts = [
 ];
 
 export default function DemoProjects({ isAdmin }) {
-  const [products, setProducts] = useState(initialProducts);
+  const [products, setProducts] = useState([]);
+  const [currentPage, setCurrentPage] = useState(0);
   const itemsPerPage = 10;
-  const [currentPage, setCurrentPage] = useState(1);
 
-  const filteredProducts = useMemo(() => {
-    return isAdmin ? products : products.filter(p => !p.image);
-  }, [isAdmin, products]);
+  // NEW: Track temporary preview separately
+  const [previewMap, setPreviewMap] = useState({});
 
-  const totalPages = Math.max(1, Math.ceil(filteredProducts.length / itemsPerPage));
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const currentItems = filteredProducts.slice(startIndex, startIndex + itemsPerPage);
+  useEffect(() => {
+    loadProductWitoutImage(currentPage, itemsPerPage)
+      .then(response => {
+        setProducts(response.content);
+      })
+      .catch(console.error);
+  }, [currentPage]);
 
-  const updateProductImage = (id, newImageUrl) => {
-    setProducts(prev =>
-      prev.map(p => (p.id === id ? { ...p, image: newImageUrl } : p))
-    );
-    setCurrentPage(1);
-  };
+  // ✅ Update preview instantly
+const updatePreview = (productId, previewUrl) => {
+  setPreviewMap(prev => ({ ...prev, [productId]: previewUrl }));
+};
 
-  const goNext = () => setCurrentPage(p => Math.min(totalPages, p + 1));
-  const goPrev = () => setCurrentPage(p => Math.max(1, p - 1));
+  // ✅ Update permanent image after upload
+const updateProductImage = (productId, imageUrl) => {
+  setProducts(prev =>
+    prev.map(p => (p.productId === productId ? { ...p, productImage: imageUrl } : p))
+  );
+};
 
   return (
-    <div className="container">
-      <h2 className="page-title">Products {isAdmin ? "(Admin Panel)" : "(Missing Images)"}</h2>
+    <div className="grid">
+      {products.map(product => (
+        <Card key={product.productId} className="card">
 
-      <div className="grid">
-        {currentItems.map(product => (
-          <Card key={product.id} className="card">
+          {/* ✅ MAIN IMAGE OR PREVIEW */}
+          <div className="card-media">
+            {product.productImage ? (
+              <img className="card-image" src={product.productImage} alt={product.productName} />
+            ) : previewMap[product.productId] ? (
+              <img className="card-image" src={previewMap[product.productId]} alt="preview" />
+            ) : (
+              <div className="card-placeholder">No Image</div>
+            )}
+          </div>
 
-            {/* BIG RESPONSIVE IMAGE PREVIEW ON CARD ✅ */}
-            <div className="card-media">
-              {product.image ? (
-                <img className="card-image" src={product.image} alt={product.name} />
-              ) : (
-                <div className="card-placeholder">No Image</div>
-              )}
-            </div>
+          <div className="card-body">
+            <h3>{product.productName}</h3>
 
-            <div className="card-body">
-              <h3 className="card-title">{product.name}</h3>
+            {isAdmin && (
+              <ImageUploadCard
+                product={product}
+                onPreview={updatePreview}  
+                onUpload={updateProductImage}  
+              />
+            )}
+          </div>
 
-              {/* Admin uploader (still no duplicate preview) ✅ */}
-              {isAdmin && (
-                <ImageUploadCard
-                  product={product}
-                  onUpload={(url) => updateProductImage(product.id, url)}
-                />
-              )}
-
-              {!isAdmin && <p className="missing-note">Image unavailable</p>}
-            </div>
-
-          </Card>
-        ))}
-      </div>
-
-      {/* Pagination */}
-      <div className="pagination">
-        <button className="page-btn" onClick={goPrev} disabled={currentPage === 1}>← Prev</button>
-        <span className="page-info">Page {currentPage} of {totalPages}</span>
-        <button className="page-btn" onClick={goNext} disabled={currentPage === totalPages}>Next →</button>
-      </div>
+        </Card>
+      ))}
     </div>
   );
 }
