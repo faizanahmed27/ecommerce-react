@@ -18,6 +18,7 @@ import UserDashboard from './Components/UserDashboard';
 import AdminLayout from './Components/AdminLayout';
 import AdminProducts from './Components/AdminProducts';
 import AdminViewProducts from './Components/AdminViewProducts';
+import DemoProducts from './Components/DemoProducts';
 
 
 function App() {
@@ -56,6 +57,7 @@ function App() {
               <Route path="reports" element={<Reports />} />
               <Route path="product" element={<AdminProducts />} />
               <Route path="view-product/:productId" element={<AdminViewProducts></AdminViewProducts>}></Route> 
+              <Route path='demoProducts' element={<DemoProducts isAdmin={true}></DemoProducts>}></Route> 
             </Route>
 
           <Route
@@ -71,6 +73,7 @@ function App() {
           {/* <Route path='/store' element={<PrivateRoute><Store></Store><PrivateRoute/>}></Route>  */}
           <Route path='/aboutUs' element={<AboutUs></AboutUs>}></Route> 
            <Route path='/products/:categoryId' element={<ProductList></ProductList>}></Route> 
+           {/* <Route path='/demoProducts' element={<DemoProducts isAdmin={true}></DemoProducts>}></Route>  */}
            
            {/* <Route path='/reports' element={<Reports></Reports>}></Route>  */}
 
