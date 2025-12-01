@@ -46,41 +46,52 @@ export default function ImageUploadCard({ product, onUpload, onPreview }) {
     setLocalPreview(null);
   };
 
-  return (
-    <>
-      <style>{`
-        .uploader-actions {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          gap: 12px;
-          width: 100%;
-        }
+ return (
+  <>
+    <style>{`
+      .uploader-actions {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 16px;
+        width: 100%;
+        text-align: center;
+        padding: 10px;
+      }
 
-        .btn-primary {
-          width: 180px;
-          padding: 10px;
-          font-size: 15px;
-          border-radius: 8px;
-          background: #007bff;
-          color: white;
-          border: none;
-          cursor: pointer;
-          font-weight: 500;
-        }
+      .btn-primary {
+        width: 100%;  /* ✅ Makes button align perfectly inside card */
+        max-width: 260px; /* ✅ Increases size for better look */
+        padding: 12px;
+        font-size: 16px;
+        border-radius: 10px;
+        background: #007bff;
+        color: white;
+        border: none;
+        cursor: pointer;
+        font-weight: 600;
+        transition: 0.2s;
+      }
 
-        .btn-primary:hover {
-          opacity: 0.9;
-          transform: scale(1.02);
-        }
-      `}</style>
+      .btn-primary:hover {
+        opacity: 0.92;
+        transform: scale(1.03);
+      }
 
-      <div className="uploader-actions">
-        <input type="file" accept="image/*" onChange={handleFileChange} />
-        <button className="btn-primary" onClick={handleUpload} disabled={!selectedFile || uploading}>
-          {uploading ? "Uploading..." : "Upload Image"}
-        </button>
-      </div>
-    </>
-  );
+      input[type="file"] {
+        display: block;
+        margin: auto;  /* ✅ Centers file chooser */
+        font-size: 15px;
+      }
+    `}</style>
+
+    <div className="uploader-actions">
+      <input type="file" accept="image/*" onChange={handleFileChange} />
+      <button className="btn-primary" onClick={handleUpload} disabled={!selectedFile || uploading}>
+        {uploading ? "Uploading..." : "Upload Image"}
+      </button>
+    </div>
+  </>
+);
 }
