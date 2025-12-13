@@ -51,11 +51,24 @@ function ProductDisplay({ product, isHovered, setIsHovered }) {
       color: "#6c757d",
       marginTop: "4px",
     },
-    actionContainer: {
-      marginTop: "18px",
-      display: "flex",
-      justifyContent: "space-between",
-    },
+   actionContainer: {
+  marginTop: "18px",
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  gap: "12px",   // 👈 controls space between buttons
+},
+
+buttonCommon: {
+  height: "44px",
+  minWidth: "110px",
+  padding: "0 20px",
+  borderRadius: "8px",
+  fontSize: "15px",
+  fontWeight: "500",
+  marginBottom: "12px", // 👈 GAP
+},
+
   };
 
   return (
@@ -80,10 +93,33 @@ function ProductDisplay({ product, isHovered, setIsHovered }) {
           <span style={styles.oldPrice}>Rs. {originalPrice}</span>
           <span style={styles.newPrice}>Rs. {discountedPrice}</span>
         </div>
-        <div style={styles.actionContainer}>
+        {/* <div style={styles.actionContainer}>
           <Button color="secondary" size="sm">View</Button>
           <Button color="primary" size="sm">Buy Now</Button>
-        </div>
+        </div> */}
+
+        <button
+  style={{
+    ...styles.buttonCommon,
+    backgroundColor: "#6c757d",
+    color: "#fff",
+    border: "none",
+  }}
+>
+  View
+</button>
+
+<button
+  style={{
+    ...styles.buttonCommon,
+    marginBottom: 0, // 👈 prevent extra space
+    backgroundColor: "#0d6efd",
+    color: "#fff",
+    border: "none",
+  }}
+>
+  Buy Now
+</button>
       </CardBody>
     </Card>
   );
