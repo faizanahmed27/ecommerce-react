@@ -1,149 +1,285 @@
 import React, { useState } from "react";
-import { Row, Col, Container, Card, CardBody, Label, Input, CardHeader, option, CardFooter, Button, Form } from "reactstrap";
+import {
+  Row,
+  Col,
+  Container,
+  Card,
+  CardBody,
+  Label,
+  Input,
+  CardHeader,
+  CardFooter,
+  Button,
+  Form
+} from "reactstrap";
 import { createUser } from "./Service/UserService";
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from "react-toastify";
 import Base from "./Base";
 
 function SignUp() {
+  const [user, setUser] = useState({
+    userName: "",
+    email: "",
+    password: "",
+    address: "",
+    about: "",
+    gender: "",
+    phone: ""
+  });
 
-    const [user, setUser] = useState({
-        userName: '',
-        email: '',
-        password: '',
-        address: '',
-        about: '',
-        gender: '',
-        phone: ''
-    });
+  const onFieldChange = (event, fieldName) => {
+    setUser({ ...user, [fieldName]: event.target.value });
+  };
 
-    const [error, setError] = useState('');
-    const onFieldChange = (event, fieldName) => {
-        //console.log(event.target.value)
-        setUser({ ...user, [fieldName]: event.target.value })
+  const registerUser = (event) => {
+    event.preventDefault();
+
+    if (!user.userName.trim()) {
+      toast.error("Name is required");
+      return;
     }
 
-    const registerUser = (event) => {
-        event.preventDefault();
-        //console.log("Submit Button Click", user.userName);
-        if (!user?.userName || user.userName.trim() === '') {
-            //alert("Name is should not be blank OR empty");
-            setError('Name should not be blank or empty');
-            return;
+    if (!user.email.trim()) {
+      toast.error("Email is required");
+      return;
+    }
+
+     if (!user.password.trim()) {
+      toast.error("Password is required");
+      return;
+    }
+
+     if (!user.address.trim()) {
+      toast.error("Address is required");
+      return;
+    }
+
+     if (!user.about.trim()) {
+      toast.error("Please add something about your self");
+      return;
+    }
+
+     if (!user.gender.trim()) {
+      toast.error("Please select the gender");
+      return;
+    }
+
+     if (!user.phone.trim()) {
+      toast.error("Mobile number is required");
+      return;
+    }
+
+    createUser(user)
+      .then((response) => {
+        if (response) {
+          toast.success("Registered Successfully");
+          reset();
+        } else {
+          toast.error("Failed to register");
         }
+      })
+      .catch((error) => {
+        if (
+          error.code === "ECONNREFUSED" ||
+          error.message?.includes("Network Error")
+        ) {
+          toast.error("Unable to connect to server");
+        } else {
+          toast.error("Something went wrong");
+        }
+      });
+  };
 
-        // createUser method from UserService.js file
-        createUser(user).then(response => {
-            console.log(response);
-            if (response) {
-                toast.success("Register Successfully");
-            } else {
-                toast.error("Failed to register");
-            }
-        }).catch(error => {
-            if (error.code === 'ECONNREFUSED' || error.message.includes('Network Error')) {
-                toast.error("Unable to connect to the server. Please try again later.");
-            } else {
-                toast.error("Something went wrong. Please check");
-            }
-        });
+  const reset = () => {
+    setUser({
+      userName: "",
+      email: "",
+      password: "",
+      address: "",
+      about: "",
+      gender: "",
+      phone: ""
+    });
+  };
 
-    }
-    // Reset Form Values
-    const reset = () => {
-        //console.log("Reset Button Click");
-        setUser({
-            userName: '',
-            email: '',
-            password: '',
-            address: '',
-            about: '',
-            gender: '',
-            phone: ''
-        });
-    }
+  return (
+    <Base>
+      <Container>
+        <Row className="justify-content-center">
+          <Col xs="12" sm="10" md="8" lg="6">
+            <Card className="shadow-sm mt-4">
+              <CardHeader>
+                <h3 className="text-center mb-0">Signup Here!</h3>
+              </CardHeader>
 
-    return (
-        <Base>
-        <Container>
+              <CardBody>
+                <Form onSubmit={registerUser}>
+                  {/* Name */}
+                  <div className="mb-3">
+                    <Label for="userName">
+                      Enter Your Name <span className="text-danger">*</span>
+                    </Label>
+                    <Input
+                      type="text"
+                      id="userName"
+                      placeholder="Enter your name"
+                      value={user.userName}
+                      onChange={(e) => onFieldChange(e, "userName")}
+                    />
+                    {/* {!user.userName && (
+                      <small className="text-danger">
+                        Name is required
+                      </small>
+                    )} */}
+                  </div>
 
-            <Row>
-                <Col md={{ size: 6, offset: 3 }}>
-                    <Card className="shadow-sm mt-3" color="light" style={{ marginLeft: 150 }}>
-                        <CardHeader>
-                            <h3 className="text-center">Signup Here!</h3>
-                        </CardHeader>
-                        <CardBody>
-                            {/* {JSON.stringify(user)} */}
-                            <Form onSubmit={registerUser}>
-                                <div>
+                  {/* Email */}
+                  <div className="mb-3">
+                    <Label for="email">
+                      Enter Your Email <span className="text-danger">*</span>
+                    </Label>
+                    <Input
+                      type="email"
+                      id="email"
+                      placeholder="Enter your email"
+                      value={user.email}
+                      onChange={(e) => onFieldChange(e, "email")}
+                    />
+                    {/* {!user.email && (
+                      <small className="text-danger">
+                        Email is required
+                      </small>
+                    )} */}
+                  </div>
 
-                                    <div className="my-3">
-                                        <Label for="userName">Enter Your Name</Label> <b> <Label style={{ color: "red" }}>*</Label></b>
-                                        <Input value={user.userName} onChange={(event) => onFieldChange(event, 'userName')} type="text" id="userName" placeholder="Enter Your Name"></Input>
-                                        {user.userName ? "" : <span style={{ color: "red", marginLeft: "50px", marginTop: '4px' }} className="text-center">Name is required</span>}
-                                        {error && <p style={{ color: 'red' }}>{error}</p>}
-                                    </div>
+                  {/* Password */}
+                  <div className="mb-3">
+                    <Label for="password">
+                      Enter Your Password{" "}
+                      <span className="text-danger">*</span>
+                    </Label>
+                    <Input
+                      type="password"
+                      id="password"
+                      placeholder="Enter your password"
+                      value={user.password}
+                      onChange={(e) => onFieldChange(e, "password")}
+                    />
+                    {/* {!user.password && (
+                      <small className="text-danger">
+                        Password is required
+                      </small>
+                    )} */}
+                  </div>
 
-                                    <div className="my-3">
-                                        <Label for="email">Enter Your Email</Label> <b> <Label style={{ color: "red" }}>*</Label></b>
-                                        <Input value={user.email} onChange={(event) => onFieldChange(event, 'email')} type="text" id="email" placeholder="Enter Your Email"></Input>
-                                        {user.email ? "" : <span style={{ color: "red", marginLeft: "50px", marginTop: '4px' }} className="text-center">Email is required</span>}
-                                    </div>
+                  {/* Address */}
+                  <div className="mb-3">
+                    <Label for="address">
+                      Enter Your Address{" "}
+                      <span className="text-danger">*</span>
+                    </Label>
+                    <Input
+                      type="textarea"
+                      id="address"
+                      placeholder="Enter your address"
+                      value={user.address}
+                      onChange={(e) => onFieldChange(e, "address")}
+                    />
+                    {/* {!user.address && (
+                      <small className="text-danger">
+                        Address is required
+                      </small>
+                    )} */}
+                  </div>
 
-                                    <div className="my-3">
-                                        <Label for="password">Enter Your Password</Label> <b> <Label style={{ color: "red" }}>*</Label></b>
-                                        <Input value={user.password} onChange={(event) => onFieldChange(event, 'password')} type="password" id="password" placeholder="Enter Your Password"></Input>
-                                        {user.password ? "" : <span style={{ color: "red", marginLeft: "50px", marginTop: '4px' }} className="text-center">Password is required</span>}
-                                    </div>
+                  {/* About */}
+                  <div className="mb-3">
+                    <Label for="about">
+                      About Yourself{" "}
+                      <span className="text-danger">*</span>
+                    </Label>
+                    <Input
+                      type="textarea"
+                      id="about"
+                      placeholder="Tell us about yourself"
+                      value={user.about}
+                      onChange={(e) => onFieldChange(e, "about")}
+                    />
+                    {/* {!user.about && (
+                      <small className="text-danger">
+                        About is required
+                      </small>
+                    )} */}
+                  </div>
 
-                                    <div className="my-3">
-                                        <Label for="address">Enter Your Address</Label> <b> <Label style={{ color: "red" }}>*</Label></b>
-                                        <Input value={user.address} onChange={(event) => onFieldChange(event, 'address')} type="textarea" id="address" placeholder="Enter Your Address"></Input>
-                                        {user.address ? "" : <span style={{ color: "red", marginLeft: "50px", marginTop: '4px' }} className="text-center">Address is required</span>}
-                                    </div>
+                  {/* Gender */}
+                  <div className="mb-3">
+                    <Label for="gender">
+                      Select Gender{" "}
+                      <span className="text-danger">*</span>
+                    </Label>
+                    <Input
+                      type="select"
+                      id="gender"
+                      value={user.gender}
+                      onChange={(e) => onFieldChange(e, "gender")}
+                    >
+                      <option value="">Select</option>
+                      <option value="Male">Male</option>
+                      <option value="Female">Female</option>
+                      <option value="Others">Others</option>
+                    </Input>
+                    {/* {!user.gender && (
+                      <small className="text-danger">
+                        Gender is required
+                      </small>
+                    )} */}
+                  </div>
 
-                                    <div className="my-3">
-                                        <Label for="about">Enter About Your Self</Label> <b> <Label style={{ color: "red" }}>*</Label></b>
-                                        <Input value={user.about} onChange={(event) => onFieldChange(event, 'about')} type="textarea" id="about" placeholder="Enter About Your Self"></Input>
-                                        {user.about ? "" : <span style={{ color: "red", marginLeft: "50px", marginTop: '4px' }} className="text-center">About is required</span>}
-                                    </div>
+                  {/* Phone */}
+                  <div className="mb-3">
+                    <Label for="phone">
+                      Contact Number{" "}
+                      <span className="text-danger">*</span>
+                    </Label>
+                    <Input
+                      type="text"
+                      id="phone"
+                      placeholder="Enter contact number"
+                      value={user.phone}
+                      onChange={(e) => onFieldChange(e, "phone")}
+                    />
+                    {/* {!user.phone && (
+                      <small className="text-danger">
+                        Contact number is required
+                      </small>
+                    )} */}
+                  </div>
 
-                                    <div className="my-3">
-                                        <Label for="gender">Select Your Gender</Label> <b> <Label style={{ color: "red" }}>*</Label></b>
-                                        <Input value={user.gender} onChange={(event) => onFieldChange(event, 'gender')} type="select" id="gender">
-                                            <option>Select</option>
-                                            <option>Male</option>
-                                            <option>Female</option>
-                                            <option>Others</option>
-                                        </Input>
-                                        {user.gender ? "" : <span style={{ color: "red", marginLeft: "50px", marginTop: '4px' }} className="text-center">Gender is required</span>}
-                                    </div>
+                  {/* Buttons */}
+                  <CardFooter className="bg-transparent border-0 px-0">
+                    <Row>
+                      <Col xs="12" md="6" className="mb-2">
+                        <Button block color="success" type="submit">
+                          Signup
+                        </Button>
+                      </Col>
 
-                                    <div className="my-3">
-                                        <Label for="phone">Enter Your Contact Number</Label> <b> <Label style={{ color: "red" }}>*</Label></b>
-                                        <Input value={user.phone} onChange={(event) => onFieldChange(event, 'phone')} type="text" id="phone" placeholder="Enter Your Contact Number"></Input>
-                                        {user.phone ? "" : <span style={{ color: "red", marginLeft: "50px", marginTop: '4px' }} className="text-center">Contact Number is required</span>}
-                                    </div>
-
-                                    <CardFooter>
-                                        <div>
-                                            <Button className="my-3" block color="success">Signup</Button>
-                                        </div>
-                                        <div>
-                                            <Button onClick={reset} className="my-3" block color="warning">Reset</Button>
-                                        </div>
-                                    </CardFooter>
-
-                                </div>
-                            </Form>
-                        </CardBody>
-                    </Card>
-                </Col>
-            </Row>
-
-        </Container>
-</Base>
-    )
+                      <Col xs="12" md="6">
+                        <Button block color="warning" onClick={reset}>
+                          Reset
+                        </Button>
+                      </Col>
+                    </Row>
+                  </CardFooter>
+                </Form>
+              </CardBody>
+            </Card>
+          </Col>
+        </Row>
+      </Container>
+    </Base>
+  );
 }
 
 export default SignUp;

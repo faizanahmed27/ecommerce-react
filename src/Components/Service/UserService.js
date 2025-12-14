@@ -4,7 +4,7 @@ const BASE_URL = "http://localhost:8080";
 const SERVICE_URL = "/ecommorce/api/v1";
 
 export const createUser = (data) => {
-    return axios.post(`${BASE_URL}/user/create`, data)
+    return axios.post(`${BASE_URL}/ecommorce/user/create`, data)
         .then(response => response.data);
 };
 
